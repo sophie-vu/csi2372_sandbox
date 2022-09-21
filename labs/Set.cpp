@@ -19,10 +19,10 @@ class Set {
 
         /**
          * @brief Copy construct a new Set object
-         * 
-         * @param s 
+         *
+         * @param s
          */
-        Set(Set& s);
+        Set(const Set &s);
 
         /**
          * @brief Returns the number of elements in the set
@@ -85,25 +85,12 @@ class Set {
         /**
          * @brief Checks if 2 sets are equal
          * 
-         * @param s1 
-         * @param s2 
+         * @param s
          * @return true 
          * @return false 
          */
-        bool equal(::set<int> s1, ::set<int> s2) {
-            return s1 == s2;
-        }
-
-        /**
-         * @brief Checks if a set is a subset of another set
-         * 
-         * @param s1 
-         * @param s2 
-         * @return true 
-         * @return false 
-         */
-        bool subset(::set<int> s1, ::set<int> s2) {
-            return std::includes(s1.begin(), s1.end(), s2.begin(), s2.end()); 
+        bool equal(Set s) {
+            return s.set == set;
         }
 
         /**
@@ -113,8 +100,8 @@ class Set {
          * @return true 
          * @return false 
          */
-        bool subset(::set<int> s1) {
-            return std::includes(s1.begin(), s1.end(), set.begin(), set.end()); 
+        bool subset(Set s1) {
+            return std::includes(s1.set.begin(), s1.set.end(), set.begin(), set.end()); 
         }
 
         /**
@@ -124,34 +111,21 @@ class Set {
          * @param s2 
          * @return Set
          */
-        Set getUnion(::set<int> s1, ::set<int> s2) {
+        Set Union(Set s1, Set s2) {
             Set res = {};
-            res = set_union(s1.begin(), s1.end(), s2.begin(), s2.end(), res);
+            res = set_union(s1.set.begin(), s1.set.end(), s2.set.begin(), s2.set.end(), res);
             return res;
         }
 
         /**
          * @brief Returns the union of a give set and the current set
          * 
-         * @param s1 
+         * @param s
          * @return Set
          */
-        Set getUnion(::set<int> s1) {
+        Set Union(Set s) {
             Set res = {};
-            res = set_union(s1.begin(), s1.end(), set.begin(), set.end(), res);
-            return res;
-        }
-
-        /**
-         * @brief Returns the intersection of 2 sets
-         * 
-         * @param s1 
-         * @param s2 
-         * @return Set
-         */
-        Set intersection(::set<int> s1, ::set<int> s2) {
-            Set res = {};
-            res = set_intersection(s1.begin(), s1.end(), s2.begin(), s2.end(), res);
+            res = set_union(s.set.begin(), s.set.end(), set.begin(), set.end(), res);
             return res;
         }
 
@@ -161,9 +135,9 @@ class Set {
          * @param s1 
          * @return Set
          */
-        Set intersection(::set<int> s1) {
+        Set intersection(Set s1) {
             Set res = {};
-            res = set_intersection(s1.begin(), s1.end(), set.begin(), set.end(), res);
+            res = set_intersection(s1.set.begin(), s1.set.end(), set.begin(), set.end(), res);
             return res;
         }
 
@@ -173,9 +147,9 @@ class Set {
          * @param s 
          * @return Set
          */
-        Set difference(::set<int> s) {
+        Set difference(Set s) {
             Set res = {};
-            res = set_difference(s.begin(), s.end(), this->set.begin(), this->set.end(), res);
+            res = set_difference(s.set.begin(), s.set.end(), this->set.begin(), this->set.end(), res);
             return res;
         }
 
@@ -198,11 +172,11 @@ class Set {
          * @param s 
          * @return Set
          */
-        Set mutual_difference(::set<int> s) { 
+        Set mutual_difference(Set s) { 
             Set res, diff1, diff2 = {};
-            diff1 = difference(s, this->set);
-            diff2 = difference(this->set, s);
-            res = getUnion(diff1.set, diff2.set);
+            diff1 = difference(s);
+            diff2 = difference(set, s.set);
+            res = Union(diff1, diff2);
             return res;
         }
 
@@ -229,41 +203,3 @@ class Set {
             }
         }
 };
-
-int main() {
-    Set a, b, uni, inter, diff, mutualdiff = {};
-    a.add_element(1);
-    a.add_element(4);
-    a.add_element(5);
-    a.add_element(6);
-
-    b.add_element(1);
-    b.add_element(2);
-    b.add_element(4);
-    b.add_element(10);
-
-    cout << "ELEMENTS IN SET A " << endl;
-    a.printSet();
-
-    cout << "ELEMENTS IN SET B " << endl;
-    b.printSet();
-
-    cout << "IS A SUBSET OF B? " << b.subset({1, 4, 5, 6});
-    cout << "IS B SUBSET OF A? " << a.subset({1, 2, 4, 10});
-
-    cout << "UNION\n" << endl;
-    uni = a.getUnion(b.getSet());
-    uni.printSet();
-
-    cout << "INTERSECTION\n" << endl;
-    inter = a.intersection(b.getSet());
-    inter.printSet();
-
-    cout << "DIFFERENCE\n" << endl;
-    diff = a.difference(b.getSet());
-    diff.printSet();
-    
-    cout << "MUTUAL DIFFERENCE\n" << endl;
-    mutualdiff = a.mutual_difference(b.getSet());
-    mutualdiff.printSet();
-}
