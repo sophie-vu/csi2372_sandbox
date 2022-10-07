@@ -1,10 +1,11 @@
 class Vector {
     private:
+        double* val;
         int dimension;
-        int magnitude;
+        double magnitude;
     public:
         Vector(); // Default constructor that initializes a vector in 2d
-        Vector(double* arr, int n); // Default that initializes a vector in nd
+        Vector(double* arr, int num); // Default that initializes a vector in nd
         Vector(Vector& other); // Copy constructor
         ~Vector(); // Destructor
         int getDimension(); // Dimension getter
@@ -19,7 +20,7 @@ class Vector {
         Vector operator+(Vector& other); // New vector has larger dim and smaller vector has elements of 0
         Vector operator-(Vector& other); // New vector has larger dim and smaller vector has elements of 0
         Vector operator*(Vector& other);
-        Vector operator+=(Vector& other); // Add + assign result
-        Vector operator-=(Vector& other); // Substract + assign the result
-        Vector operator<<(Vector& other); // Print vector in format v = (5, -6, 2)
+        void operator+=(Vector& other); // Add + assign result
+        void operator-=(Vector& other); // Substract + assign the result
+        void operator<<(Vector& other); // Print vector in format v = (5, -6, 2)
 };

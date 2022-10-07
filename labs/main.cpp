@@ -1,25 +1,32 @@
 #include <iostream>
+#include <stdlib.h>
 #include "Vector.cpp"
 using namespace std;
 
 int main() {
-    int d1, d2;
-    cout << "Enter degree of first polynomial p: ";
-    cin >> d1;
-    double* arr = new double[d1 + 1];
-    for (int i = d1; i >= 0; i--) {
-        cout << "Enter coefficient of x^" << i << ": ";
-        cin >> arr[i];
+    int x, y, z, size;
+    bool notValid = true;
+    while (notValid) {
+        cout << "What is the dimension of the array? " << endl;
+        cin >> size;
+        if ((size > 3) || (size < 2)) {
+            cout << "Enter either a dimension that is either 2d or 3d. ";
+        } else {
+            notValid = false;
+            break;
+        }
     }
-    Polynomial p(arr, d1 + 1);
-    p.print();
-    cout << "Enter degree of second polynomial q: ";
-    cin >> d2;
-    double* arr2 = new double[d2 + 1];
-    for (int i = d2; i >= 0; i--) {
-        cout << "Enter coefficient of x^" << i << ": ";
-        cin >> arr2[i];
+    double* arr = new double[size];
+    cout << "Enter the x axis: " << endl;
+    cin >> x;
+    cout << "Enter the y axis: " << endl;
+    cin >> y; 
+    arr[0] = x;
+    arr[1] = y;   
+    if (size == 3) {
+        cout << "Enter the z axis: " << endl;
+        cin >> z;    
+        arr[2] = z;
     }
-    Polynomial q(arr2, d2 + 1);
-    q.print();
+    Vector v = Vector(arr, size);
 }
