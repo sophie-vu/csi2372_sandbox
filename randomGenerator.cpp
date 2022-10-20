@@ -6,16 +6,20 @@
 using namespace std;
 
 RandomGenerator::RandomGenerator() {
+    // this->s = 4;
+    // this->first = 4000;
+    // this->second = 5000;
     this->s = 4;
     this->first = getRand();
     this->second = getRand();
+    cout << "Goes here" << endl;
     seq.push_back(first);
     seq.push_back(second);
-        cout << "Goes here" << endl;
-
 }
 
 RandomGenerator::RandomGenerator(int s, int first, int secon) {
+        cout << "Goes there" << endl;
+
     this->s = 2 * s;
     this->first = (first % s == 0) ? first : getRand();
     this->second = (second % s == 0) ? second : getRand();
@@ -141,7 +145,7 @@ void RandomGenerator::operator--() {
 }
 
 ostream& operator<<(ostream& os, RandomGenerator const &r) {
-    cout << "Goes here" << endl;
+    cout << "Goes to print" << endl;
     for (int i = 0; i < r.seq.size(); i++) {
         if (i == r.seq.size() - 1) {
             os << r.seq[i];
@@ -153,14 +157,14 @@ ostream& operator<<(ostream& os, RandomGenerator const &r) {
 }
 
 int RandomGenerator::getRand() { 
-
-    string k = "9", j = "1";
-    for (int i = 0; i < s; i++) {
-        cout << "S IS: " << s << endl;
-        k.append(0);
-        j.append(0);
+    int k = 9, j = 1, i = s - 1;
+    // Increase values depending on s
+    while (i != 0) {
+        k *= 10;
+        j *= 10;
+        i--;
     }
-    return rand() % stoi(k) + stoi(j); 
+    return rand() % k + j; 
 }
 
 int RandomGenerator::format(int e, int givenS) {
