@@ -29,4 +29,5 @@ class RandomGenerator {
         void operator--();  
         int getRand(); // Returns a random digit 
         int format(int e, int givenS); // Adds randomized element to back of sequence with given s
+        int countDigit(int n);
 };

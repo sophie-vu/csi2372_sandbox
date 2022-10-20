@@ -6,25 +6,19 @@
 using namespace std;
 
 RandomGenerator::RandomGenerator() {
-    // this->s = 4;
-    // this->first = 4000;
-    // this->second = 5000;
     this->s = 4;
     this->first = getRand();
     this->second = getRand();
-    cout << "Goes here" << endl;
     seq.push_back(first);
     seq.push_back(second);
 }
 
-RandomGenerator::RandomGenerator(int s, int first, int secon) {
-        cout << "Goes there" << endl;
-
+RandomGenerator::RandomGenerator(int s, int first, int second) {
     this->s = 2 * s;
-    this->first = (first % s == 0) ? first : getRand();
-    this->second = (second % s == 0) ? second : getRand();
-    seq.push_back(first);
-    seq.push_back(second);
+    this->first = (countDigit(first) == this->s) ? first : getRand();
+    this->second = (countDigit(second) == this->s) ? second : getRand();
+    seq.push_back(this->first);
+    seq.push_back(this->second);
 }
 
 RandomGenerator::RandomGenerator(RandomGenerator const &r) {
@@ -145,7 +139,6 @@ void RandomGenerator::operator--() {
 }
 
 ostream& operator<<(ostream& os, RandomGenerator const &r) {
-    cout << "Goes to print" << endl;
     for (int i = 0; i < r.seq.size(); i++) {
         if (i == r.seq.size() - 1) {
             os << r.seq[i];
@@ -164,7 +157,9 @@ int RandomGenerator::getRand() {
         j *= 10;
         i--;
     }
-    return rand() % k + j; 
+    int r = rand();
+    int res = r % k + j;
+    return res; 
 }
 
 int RandomGenerator::format(int e, int givenS) {
@@ -184,5 +179,17 @@ int RandomGenerator::format(int e, int givenS) {
         }
         return stoi(res); // Parse to int
     }
+}
+
+int RandomGenerator::countDigit(int n) {
+    if (n == 0) {
+        return 1;
+    }
+    int count = 0;
+    while (n != 0) {
+        n = n / 10;
+        ++count;
+    }
+    return count;
 }
 
