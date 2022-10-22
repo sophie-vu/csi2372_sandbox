@@ -27,10 +27,12 @@ public:
     BigInteger operator+(BigInteger &b); // Addition of two numbers
     BigInteger operator-(BigInteger &b); // Substraction of two numbers
     BigInteger operator*(BigInteger &b); // Multiplication of two numbers
-    void operator++(); // 
-    void operator--();
-    ostream operator<<(BigInteger const &b);
-    istream operator>>(BigInteger const &b);
+    void operator++(); // For increasing the number by 1
+    void operator--(); // For decreasing the number by 1
+    BigInteger operator/(BigInteger const &b); // Integer division
+    BigInteger operator%(BigInteger const &b); // Integer modulo
+    ostream& operator<<(ostream &os); 
+    istream& operator>>(istream &os);
     int convertArrayToInt(int* n);
     int* convertIntToArray(int n);
 };

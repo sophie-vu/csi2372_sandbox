@@ -267,7 +267,50 @@ void BigInteger::operator--() {
     }
 }
 
+/**
+ * @brief For diving the first number by the second number, the result should be in the base of the first number (Integer division)
+ * @param b 
+ * @return BigInteger 
+ */
+BigInteger BigInteger::operator/(BigInteger const &b) {
+    int other = ConvertBase(convertArrayToInt(b.arr), b.base, base);
+    int curr = convertArrayToInt(arr);
+    int res = other / curr;
+    *this = BigInteger(res, base);
+    return *this;
+}
 
+/**
+ * @brief For getting the remainder of the division of the first number by the second number, the result should be in the base of the first number
+ * @param b 
+ * @return BigInteger 
+ */
+BigInteger BigInteger::operator%(BigInteger const &b) {
+    int other = ConvertBase(convertArrayToInt(b.arr), b.base, base);
+    int curr = convertArrayToInt(arr);
+    int res = other % curr;
+    *this = BigInteger(res, base);
+    return *this;
+}
+
+/**
+ * @brief For printing a number
+ * @param os 
+ * @return ostream& 
+ */
+ostream& BigInteger::operator<<(ostream& out) {
+    out << "(" << convertArrayToInt(arr) << ")" << base << endl;
+    return out;
+}
+
+istream& BigInteger::operator>>(istream& in) {
+    int n;
+    in >> n;
+    this->isPositive = (n > 0) ? true : false;
+    this->arr = convertIntToArray(n);
+    in >> this->base;
+    return in;
+}
 
 int BigInteger::convertArrayToInt(int* array) {
     int number = 0;
