@@ -34,8 +34,8 @@ public:
     BigInteger operator--(int n); // For decreasing the number by 1 (post)
     BigInteger operator/(BigInteger const &b); // Integer division
     BigInteger operator%(BigInteger const &b); // Integer modulo
-    friend istream& operator>>(istream &in, BigInteger &b);
-    friend ostream& operator<<(ostream& os, BigInteger const &b);
+    friend istream& operator>>(istream &in, BigInteger &b); // Print
+    friend ostream& operator<<(ostream& os, BigInteger const &b); // Input
     int* convertIntToArray(int n, int size);
     int convertArrayToInt(int [], int size);
     int numberOfDigits(int x);
