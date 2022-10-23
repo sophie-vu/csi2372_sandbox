@@ -5,7 +5,8 @@ class BigInteger {
 private:
     int base;
     bool isPositive;
-    int *arr;
+    int *arrVal;
+    int val;
 public:
     BigInteger(); // Default constructor
     BigInteger(int n, int b); // Parameter constructor
@@ -14,7 +15,7 @@ public:
     ~BigInteger(); // Desctructor
     int num_digits(); // Returns the number of digits in the number of the given base
     void add_digit(int n); // Adds a digit to the end of the number
-    void remove_digit(int n); // Remove a digit from the end of the number
+    void remove_digit(); // Remove a digit from the end of the number
     void insert_digit(int i, int n); // Insert a digit at a particular position
     int operator[](int i); // Indexing
     bool operator==(BigInteger const &b); // Checks if 2 numbers are equal
@@ -27,12 +28,15 @@ public:
     BigInteger operator+(BigInteger &b); // Addition of two numbers
     BigInteger operator-(BigInteger &b); // Substraction of two numbers
     BigInteger operator*(BigInteger &b); // Multiplication of two numbers
-    void operator++(); // For increasing the number by 1
-    void operator--(); // For decreasing the number by 1
+    BigInteger operator++(); // For increasing the number by 1 (pre)
+    BigInteger operator--(); // For decreasing the number by 1 (pre)
+    BigInteger operator++(int n); // For increasing the number by 1 (post)
+    BigInteger operator--(int n); // For decreasing the number by 1 (post)
     BigInteger operator/(BigInteger const &b); // Integer division
     BigInteger operator%(BigInteger const &b); // Integer modulo
-    ostream& operator<<(ostream &os); 
-    istream& operator>>(istream &os);
-    int convertArrayToInt(int* n);
-    int* convertIntToArray(int n);
+    friend istream& operator>>(istream &in, BigInteger &b);
+    friend ostream& operator<<(ostream& os, BigInteger const &b);
+    int* convertIntToArray(int n, int size);
+    int convertArrayToInt(int [], int size);
+    int numberOfDigits(int x);
 };
