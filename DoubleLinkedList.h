@@ -1,13 +1,13 @@
 #include <iostream>
 using namespace std;
 
-struct Node {
+typedef struct Node {
 	friend class DoubleLinkedList;
     public:
         int data;
-        struct Node* next;
-        struct Node* prev;
-};
+        Node* next;
+        Node* prev;
+} Node;
 
 class DoubleLinkedList {
     public:
@@ -19,6 +19,7 @@ class DoubleLinkedList {
         void remove_item(int pos); // Remove an elem at given index
         void remove_from_front(); // Remove first elem
         void remove_from_back(); // Remove last elem
-        Node* operator[](int pos); // Indexing
+        int operator[](int pos); // Indexing
         friend ostream& operator<<(ostream& os, const DoubleLinkedList d); // Printing
+        int count_nodes(); 
 };

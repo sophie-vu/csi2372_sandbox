@@ -129,14 +129,14 @@ ostream& operator<<(ostream& os, const DoubleLinkedList d) {
     return os;
 }
 
-Node* DoubleLinkedList::operator[](int pos) {
+int DoubleLinkedList::operator[](int pos) {
     if (pos < 0 || pos > i) {
         cout << "Enter a valid position." << endl;
-        return NULL;
+        return -1;
     } else if (pos == 0) {
-        return head;
+        return head->data;
     } else if (pos == i + 1) {
-        return tail;
+        return tail->data;
     } else {
         Node* res = new Node();
         pos--;
@@ -144,6 +144,10 @@ Node* DoubleLinkedList::operator[](int pos) {
             res = first->next;
             pos--;
         }
-        return res;
+        return res->data;
     }
+}
+
+int DoubleLinkedList::count_nodes() {
+    return i;
 }
