@@ -9,7 +9,6 @@ int main()
 
 	//The single linked list file in class is updated
 	//on BrightSpace, if you need it, download the new version.
-
 	mylist.add_to_back(10);
 	mylist.add_to_back(6);
 	mylist.add_to_back(7);
@@ -20,8 +19,8 @@ int main()
 	mylist.add_to_back(35);
 	mylist.add_to_back(21);
 	mylist.add_to_back(17);
-
 	cout << mylist << endl;
+
 	//Should be printed
 	//10, 6, 7, 15, 25, 12, 9, 35, 21, 17
 

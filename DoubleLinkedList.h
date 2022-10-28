@@ -11,6 +11,11 @@ typedef struct Node {
 
 class DoubleLinkedList {
     public:
+        Node* head;
+        Node* first;
+        Node* tmp;
+        Node* tail;
+        int i = 0; 
         DoubleLinkedList(); // Init pointers
         ~DoubleLinkedList(); // Release all memories allocaed for nodes
         void add_to_front(int data); // Add an elem to the beginning
@@ -20,6 +25,6 @@ class DoubleLinkedList {
         void remove_from_front(); // Remove first elem
         void remove_from_back(); // Remove last elem
         int operator[](int pos); // Indexing
-        friend ostream& operator<<(ostream& os, const DoubleLinkedList d); // Printing
+        friend ostream& operator<<(ostream& os, DoubleLinkedList& d); // Printing
         int count_nodes(); 
 };

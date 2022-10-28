@@ -2,12 +2,6 @@
 #include <iostream>
 using namespace std;
 
-Node* head;
-Node* first;
-Node* tmp;
-Node* tail;
-int i = 0; 
-
 DoubleLinkedList::DoubleLinkedList() {
     head = NULL, first = NULL, tmp = NULL, tail = NULL;
 }
@@ -48,7 +42,7 @@ void DoubleLinkedList::add_to_back(int data) {
     ptr->next = NULL;
     ptr->prev = NULL;
     if (head == NULL) { // If empty list
-        first = ptr;
+        head = ptr;
         first = head;
         tail = head;
     } else {
@@ -120,12 +114,14 @@ void DoubleLinkedList::remove_item(int pos) {
     }
 }
 
-ostream& operator<<(ostream& os, const DoubleLinkedList d) {
-    Node* ptr = head;
-    while (ptr != NULL) {
-        os << ptr->data << " ";
-        ptr = ptr->next;
+ostream& operator<<(ostream& os, DoubleLinkedList& d) {
+    Node tmp = *new Node();
+    tmp = *d.head;
+    for (int j = 0; j < d.i; j++) {
+        os << tmp.data << " ";
+        tmp = *tmp.next;
     }
+    os << endl;
     return os;
 }
 
