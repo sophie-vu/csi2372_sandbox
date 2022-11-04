@@ -46,7 +46,7 @@ int getY(const Line& l, double x) {
 }
 
 tuple<int, int> Line::intersection_point(const Line &l, double &x, double &y) {
-    int resX = (l.m * x - this->m * x) + (l.b - this->b);
+    int resX = (l.b * x - this->b) / (this->m - l.m);
     int resY = getY(l, resX);
     return tuple<int, int>(resX, resY);
 }
