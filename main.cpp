@@ -1,6 +1,7 @@
 #include "Q1.cpp"
 #include "Q2.cpp"
 #include "Q3.cpp"
+#include "Q4.cpp"
 using namespace std;
 
 int main() {
@@ -33,7 +34,14 @@ int main() {
     // a = b;
     // cout << "After: " << a << endl;
     
-    Time teem = *new Time(16, 20, 30, 55);
-    cout << teem << endl;
+    // Time teem = *new Time(16, 20, 30, 55);
+    // cout << teem << endl;
+
+    Dynamic d = *new Dynamic(0, 4);
+    d.add_item(10);
+    d.add_item(0);
+    d.add_item(-2);
+    d.add_item(1);
+    // cout << d << endl;
     return 0;
 }
