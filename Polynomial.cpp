@@ -33,3 +33,40 @@ void Polynomial::customSort() {
 bool sortBySec(const tuple<int, int>& a, const tuple<int, int>& b) {
     return (get<1>(a) < get<1>(b));
 }
+
+void Polynomial::operator+(const Polynomial &p) {
+    for (tuple<int, int> t : pol) {
+        for (tuple<int, int> v : p.pol) {
+            if (get<0>(t) == get<0>(v)) {
+                get<1>(t) += get<1>(v);
+            }
+        }
+    }
+}
+
+
+void Polynomial::operator-(const Polynomial &p) {
+    for (tuple<int, int> t : pol) {
+        for (tuple<int, int> v : p.pol) {
+            if (get<0>(t) == get<0>(v)) {
+                get<1>(t) -= get<1>(v);
+            }
+        }
+    }
+}
+
+void Polynomial::operator*(const Polynomial &p) {
+    for (tuple<int, int> t : pol) {
+        for (tuple<int, int> v : p.pol) {
+            if (get<0>(t) == get<0>(v)) {
+                get<1>(t) *= get<1>(v);
+            }
+        }
+    }
+}
+
+void Polynomial::operator*(int v) {
+    for (tuple<int, int> t : pol) {
+        get<1>(t) *= v;
+    }
+}
