@@ -14,10 +14,11 @@ class Polynomial {
         int getDegree();
         int getCoefficient(int power);
         int evaluate(int x);
-        void customSort();
-        static bool sortBySec(const tuple<int, int>& a, const tuple<int, int>& b);
+        // void customSort();
+        // static bool sortBySec(const tuple<int, int>& a, const tuple<int, int>& b);
         void operator+(const Polynomial &p);
         void operator-(const Polynomial &p);
         void operator*(const Polynomial &p);
         void operator*(int v);
+        friend ostream& operator<<(ostream& out, const Polynomial& p);
 };

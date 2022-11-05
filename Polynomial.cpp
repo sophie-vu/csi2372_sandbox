@@ -1,5 +1,6 @@
 #include "Polynomial.h"
 #include <algorithm>
+#include <cstdlib>
 using namespace std;
 
 Polynomial::Polynomial() {
@@ -11,8 +12,8 @@ Polynomial::Polynomial(const Polynomial& p) {
 }
 
 void Polynomial::addTerm(int power, int coef) {
-    pol.push_back(tuple<int, int>(coef, power));
-    customSort();
+    pol.push_back(tuple<int, int>(power, coef));
+    // customSort();
 }
 
 void Polynomial::removeTerm(int power) {
@@ -26,13 +27,13 @@ void Polynomial::removeTerm(int power) {
     );
 }
 
-void Polynomial::customSort() {
-    sort(pol.begin(), pol.end(), sortBySec);
-}
+// void Polynomial::customSort() {
+    // sort(pol.begin(), pol.end(), sortBySec);
+// }
 
-bool sortBySec(const tuple<int, int>& a, const tuple<int, int>& b) {
-    return (get<1>(a) < get<1>(b));
-}
+// static bool sortBySec(const tuple<int, int>& a, const tuple<int, int>& b) {
+//     return (get<1>(a) < get<1>(b));
+// }
 
 void Polynomial::operator+(const Polynomial &p) {
     for (tuple<int, int> t : pol) {
@@ -69,4 +70,18 @@ void Polynomial::operator*(int v) {
     for (tuple<int, int> t : pol) {
         get<1>(t) *= v;
     }
+}
+
+ostream& operator<<(ostream& out, const Polynomial& p) {
+    for (tuple<int, int> t : p.pol) {
+        if (get<1>(t) == 0) {
+            continue;
+        } 
+        if (get<1>(t) <=0) {
+            out << "-" << abs(get<1>(t)) << "x" << abs(get<0>(t)) << " ";
+        } else {
+            out << get<1>(t) << "x" << get<0>(t) << " ";
+        }
+    }
+    return out;
 }
