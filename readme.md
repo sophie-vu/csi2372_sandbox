@@ -4,5 +4,5 @@
 | ------ | ------ | ------ |
 | Sophie Vu | 300113938 | svu043@uottawa.ca |
 
-### [Instructions for the lab 5](https://uottawa.brightspace.com/d2l/le/content/333803/viewContent/4863352/View)
+### [Instructions for the lab 6](https://uottawa.brightspace.com/d2l/le/content/333803/viewContent/4880013/View)
 
