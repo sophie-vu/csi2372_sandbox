@@ -1,14 +1,10 @@
-#include "DoubleLinkedList.cpp"
+#include "Crossword.cpp"
 #include <iostream>
 using namespace std;
 
 int main() {
-    DoubleLinkedList d;
-    d.insert_back(0);
-    d.insert_front(1);
-    // cout << d.getHead() << endl;
-    //     cout << d.getTail() << endl;
-        d.delete_list(0);
-cout << d.getTail() << endl;
-    return 0;
+	Crossword c = Crossword(2, 2);
+	c.add_questions("2 + 2", "4", 0, 0, true);
+	// cout << c << endl;
+	return 0;
 }
