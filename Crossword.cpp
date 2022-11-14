@@ -1,5 +1,7 @@
 #include "Crossword.h"
+#include <exception>
 #include <iostream>
+#include <new>
 #include <unordered_map>
 #include <cstring>
 #include <vector>
@@ -21,8 +23,7 @@ Crossword::Crossword() {
             userView[i][j] = ' '; 
         }
     }
-    questions.resize(1000); // Init size
-    questions.shrink_to_fit(); // Resize
+    this->questions = new Node[n];
 }
 
 /**
@@ -43,8 +44,8 @@ Crossword::Crossword(int n, int m) {
             userView[i][j] = ' '; 
         }
     }
-    questions.resize(1000); // Init size
-    questions.shrink_to_fit();} // Resize
+    this->questions = new Node[n];
+} 
 
 /**
  * @brief 
@@ -61,13 +62,10 @@ bool Crossword::add_questions(string question, string answer, int mIndex, int nI
         return false;
     }
     // Init entree node
-    Node entree;
-    entree.question = question;
-    entree.answer = answer;
-    entree.mIndex = mIndex;
-    entree.nIndex = nIndex;
-    entree.isHori = isHori;
-    questions.push_back(entree); // Add entree
+    int arrSize = (int) sizeof(questions)/sizeof(*questions);
+    Node entree { question, answer, mIndex, nIndex, isHori };
+    questions = addToArray(questions, entree, arrSize);// Add entree
+    // questions.shrink_to_fit(); // Resize
     puzzle[mIndex][nIndex] = *answer.c_str();
     return true;
 }
@@ -145,7 +143,9 @@ bool Crossword::validInput(int mIndex, int nIndex, string question, string answe
  * @param answer 
  */
 void Crossword::solve(int mIndex, int nIndex, string answer) {
-    for (Node n : questions) {
+    int arrSize = (int) sizeof(questions)/sizeof(*questions);
+    for (int i = 0; i < arrSize; i++) {
+        Node n = questions[i];
         if ((n.mIndex == mIndex) && (n.mIndex == mIndex) && (n.answer == answer)) {
             cout << "correct!" << endl;
             for (int i = 0; i < n.answer.length(); i++) {
@@ -161,21 +161,11 @@ void Crossword::solve(int mIndex, int nIndex, string answer) {
     }
 }
 
-ostream& operator<<(ostream& out, Crossword c) {
-    // out << "goes there" << endl;
-    for (Node q : c.questions) {
-        out << "(" << q.mIndex << ", " << q.nIndex << ") – " << q.question;
-        if (q.isHori) {
-            out << " (Horizontal)";
-        } else {
-            out << " (Vertical)";
-        }
-    }
-    return out;
-}
-
 void Crossword::print() {
-    for (Node q : this->questions) {
+    int arrSize = (int) sizeof(questions)/sizeof(*questions);
+    cout << arrSize << endl;
+    for (int i = 0; i < arrSize; i++) {
+        Node q = questions[i];
         cout << "(" << q.mIndex << ", " << q.nIndex << ") – " << q.question;
         if (q.isHori) {
             cout << " (Horizontal)";
@@ -183,4 +173,15 @@ void Crossword::print() {
             cout << " (Vertical)";
         }
     }
+}
+
+Node* Crossword::addToArray(Node* list, const Node& entree, int& size) {
+    Node* new_list = new Node[size + 1];
+    for (int i = 0; i < size; i++) {
+        new_list[i] = list[i];
+    }
+    new_list[size] = entree;
+    delete[] list;
+    ++size;
+    return new_list;
 }

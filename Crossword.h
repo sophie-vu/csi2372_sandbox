@@ -20,8 +20,8 @@ class Crossword {
         char** puzzle; // Double array of vectors
         int n; // Columns
         int m; // Rows
+        Node* questions; // Array of questions
     public:
-        vector<Node> questions; // Array of questions
         Crossword();
         Crossword(int, int);
         bool add_questions(string, string, int, int, bool);
@@ -30,5 +30,6 @@ class Crossword {
         bool match(string, int, int, bool); // Added method
         // int spaceLeft(string, int, int, bool);
         void print();
+        Node* addToArray(Node*, const Node&, int&);
         // friend ostream& operator<<(ostream&, Crossword);
 };
