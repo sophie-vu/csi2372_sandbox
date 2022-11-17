@@ -1,10 +1,15 @@
-#include "Crossword.cpp"
+#include "Mapping.cpp"
 #include <iostream>
 using namespace std;
 
 int main() {
-	Crossword c = Crossword(2, 2);
-	c.add_questions("2 + 2", "4", 0, 0, true);
-	c.print();
-	return 0;
+	Mapping<string, vector<int>> m;
+	vector<int> v;
+  	vector<int>::iterator it;
+	it = v.begin();
+	v.insert(it, 19);
+	v.insert(it, 35);
+	v.insert(it, 60);
+	m.add_item("Mike",v);
+	cout << m << endl;
 }
