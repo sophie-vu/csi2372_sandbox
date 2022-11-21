@@ -1,278 +1,339 @@
-#include <iostream>
 #include "Relation.h"
-#include "Set.h"
-#include <string>
+#include <iostream>
+#include <stack>
 using namespace std;
 
 /**
  * @brief Default constructor
  * 
+ * @tparam T 
  */
-Relation::Relation() {
-	this->size = 0;
-	this->capacity = 0;
-	this->elements = new Pair[MAX_CARD];
-	if (this->elements == NULL) {
-		cout << "Not enough memory for this set!" << endl;
+template <class T> Relation<T>::Relation() {
+    card = 0;
+    elements = new Pair<T>[MAX_CARD];
+    if (elements == NULL) {
+        cout << "Memory error." << endl;
     } else {
-		this->capacity = MAX_CARD;
+        capacity = MAX_CARD;
     }
 }
 
 /**
  * @brief Copy constructor
  * 
+ * @tparam T 
  * @param r 
  */
-Relation::Relation(const Relation& r) {
-	int i;
-	this->size = 0;
-	this->capacity = 0;
-	this->elements = new Pair[r.capacity];
-	if (this->elements == NULL) {
-		cout << "Not enough memory!" << endl;
+template <class T> Relation<T>::Relation(const Relation& r) {
+    card = 0;
+    elements = new Pair<T>[MAX_CARD];
+    if (elements == NULL) {
+        cout << "Memory error." << endl;
     } else {
-		this->capacity = r.capacity;
-		this->size = r.size;
-		this->root = r.root;
-		for (i = 0; i < r.size; i++)
-			this->elements[i] = r.elements[i];
-	}
+        capacity = r.capacity;
+        card = r.card;
+        root = r.root;
+        for (int i = 0; i < capacity; i++) {
+            elements[i] = r.elements[i];
+        }
+    }
 }
-
+ 
 /**
  * @brief Destructor
  * 
+ * @tparam T 
  */
-Relation::~Relation() {
-	delete[] elements;
+template <class T> Relation<T>::~Relation() {
+    delete[] elements;
 }
 
 /**
  * @brief Returns the number of pairs
  * 
+ * @tparam T 
  * @return int 
  */
-int Relation::cardinality() {
-	return this->size;
+template <class T> int Relation<T>::cardinality() {
+    return card;
 }
 
 /**
- * @brief Adds a pair into the relation
+ * @brief Adds a pair
  * 
- * @param elemb
- */
-void Relation::add_element(Pair elem) {
-    elements[size] = elem;
-    size++;
-}
-
-/**
- * @brief Checks if an element is a member of the relation
- * 
- * @param elem 
+ * @tparam T 
+ * @param p 
  * @return true 
  * @return false 
  */
-bool Relation::is_member(int elem) {
-	int i;
-	for (i = 0; i < size; i++) {
-		if (elements[i].first == elem || elements[i].second == elem) {
+template <class T> bool Relation<T>::add_element(Pair<T> p) {
+    if (!is_member(p.first) || !is_member(p.second)) {
+        return false;
+    } else if (card == capacity) {
+        Pair<T>* tmp;
+        tmp = new Pair<T>[capacity + MAX_CARD / 2];
+        if (tmp == NULL) {
+            cout << "Memory error." << endl;
+        }
+        for (int i = 0; i < card; i++) {
+            tmp[i] = elements[i];
+        }
+        capacity = capacity + MAX_CARD / 2;
+        delete[] elements;
+        elements = tmp;
+    }
+    for (int i = 0 ; i < card; i++) {
+        if (elements[i].first == p.first && 
+        elements[i].second == p.second) { // Element is already present
             return true;
         }
     }
-	return false;
+    elements[card++] = p;
+    return true;
 }
 
 /**
- * @brief Removes an element from the relation
+ * @brief Removes all occurrences of an element
  * 
- * @param elem 
+ * @tparam T 
+ * @param t 
  */
-void Relation::remove_element(int elem) {
-	int i, pos = -1;
-	for (i = 0; i < size; i++) {
-		if (elements[i].first == elem || elements[i].second == elem) {
-			pos = i;
-			break;
-		}
-	}
-	if (pos != -1) {
-		for (i = pos; i < size; i++) {
-			elements[i] = elements[i + 1];
+template <class T> void Relation<T>::remove_element(T t) {
+    stack<int> pos; // Array of indexes for occurrences
+    for (int i = 0; i < card; i++) {
+        if (elements[i].first == t || elements[i].second == t) {
+            pos.push(i);
         }
-		size--;
-	}
-}
-
-/**
- * @brief Checks if the relation is reflexive
- * 
- * @return true 
- * @return false 
- */
-bool Relation::reflexive() {
-	int i;
-	for (i = 0; i < root.cardinality(); i++) {
-		Pair p;
-		p.first = p.second = root.get_item(i);
-		if (!is_member(p.first) && !is_member(p.second)) {
-			return false;
-        }
-	}
-	return true;
-}
-
-/**
- * @brief Checks if the relation is irreflexive
- * 
- * @return true 
- * @return false 
- */
-bool Relation::irreflexive() {
-	int i;
-	for (i = 0; i < root.cardinality(); i++) {
-		Pair p;
-		p.first = p.second = root.get_item(i);
-		if (is_member(p.first) || is_member(p.second)) {
-			return false;
-        }
-	}
-	return true;
-}
-
-/**
- * @brief 
- * 
- * @return true 
- * @return false 
- */
-bool Relation::symmetric() {
-	int i;
-	for (i = 0; i < size; ++i) {
-		Pair p;
-		p.first = elements[i].second;
-		p.second = elements[i].first;
-		if (!is_member(p.first) || !is_member(p.second)) {
-			return false;
-        }
-	}
-	return true;
-}
-
-/**
- * @brief 
- * 
- * @return true 
- * @return false 
- */
-bool Relation::asymmetric() {
-	int i;
-	for (i = 0; i < size; ++i) {
-		if (elements[i].first != elements[i].second) {
-			Pair p;
-			p.first = elements[i].second;
-			p.second = elements[i].first;
-			if (is_member(p.first) || is_member(p.second)) {
-				return false;
+    }
+    if (pos.empty()) {
+        return;
+    } else {
+        while (!pos.empty()) {
+            int idx = pos.top();
+            for (int i = idx; i < card; i++) {
+                elements[i] = elements[i + 1];
             }
-		}
-	}
-	return true;
+            card--;
+        }
+    }
 }
 
 /**
- * @brief Checks if the relation is transitive
+ * @brief Checks if an element is present
  * 
+ * @tparam T 
+ * @param t 
  * @return true 
  * @return false 
  */
-bool Relation::transitive() {
-	int i, j;
-	for (i = 0; i < size; i++) {
-		for (j = 0; j < size; ++j) {
-			if (elements[i].second == elements[j].first) {
-				Pair p;
-				p.first = elements[i].first;
-				p.second = elements[j].second;
-				if (!is_member(p.first) && !is_member(p.second)) {
-					return false;
+template <class T> bool Relation<T>::is_member(T t) {
+    for (int i = 0; i < card; i++) {
+        if (elements[i].first == t || elements[i].second == t) {
+            return true;
+        }
+    }
+    return false;
+}
+
+/**
+ * @brief Comparison opeartor
+ * 
+ * @tparam T 
+ * @param r 
+ * @return true 
+ * @return false 
+ */
+template <class T> bool Relation<T>::operator==(Relation &r) {
+    return (subset(r) && r.subset(*this));
+}
+
+/**
+ * @brief Checks if a relation is a subset
+ * 
+ * @tparam T 
+ * @param r 
+ * @return true 
+ * @return false 
+ */
+template <class T> bool Relation<T>::subset(Relation r) {
+    for (int i = 0; i < card; i++) {
+        if (!r.is_member(elements[i])) {
+            return false;
+        }
+    }
+    return true;
+}
+
+/**
+ * @brief Index operator
+ * 
+ * @tparam T 
+ * @param idx 
+ * @return T 
+ */
+template <class T> T Relation<T>::operator[](int idx) {
+    if (idx >= 0 && idx < card) {
+        return elements[idx];
+    } else {
+        return -1; // Default error
+    }
+}
+
+/**
+ * @brief Checks if reflexive relation
+ * 
+ * @tparam T 
+ * @return true 
+ * @return false 
+ */
+template <class T> bool Relation<T>::reflexive() {
+    for (int i = 0; i < root.cardinality(); i++) {
+        Pair<T> p;
+        p.first = p.second = root[i];
+        if (!is_member(p)) {
+            return false;
+        }
+    }
+    return true;
+}
+
+/**
+ * @brief Checks if irreflexive relation
+ * 
+ */
+template <class T> bool Relation<T>::irreflexive() {
+    for (int i = 0; i < root.cardinality(); i++) {
+        Pair<T> p;
+        p.first = p.second = root[i];
+        if (is_member(p)) {
+            return false;
+        }
+    }
+    return true;
+}
+
+/**
+ * @brief Checks if symmetric relation
+ * 
+ * @tparam T 
+ * @return true 
+ * @return false 
+ */
+template <class T> bool Relation<T>::symmetric() {
+    for (int i = 0; i < card; i++) {
+        Pair<T> p;
+        p.first = elements[i].first;
+        p.second = elements[i].second;
+        if (!is_member(p)) {
+            return false;
+        }
+    }
+    return true;
+}
+
+/**
+ * @brief Checks if asymmetric relation
+ * 
+ * @tparam T 
+ * @return true 
+ * @return false 
+ */
+template <class T> bool Relation<T>::asymmetric() {
+    for (int i = 0; i < card; i++) {
+        Pair<T> p;
+        p.first = elements[i].first;
+        p.second = elements[i].second;
+        if (is_member(p)) {
+            return false;
+        }
+    }
+    return true;
+}
+
+/**
+ * @brief Checks if transitive relation
+ * 
+ * @tparam T 
+ * @return true 
+ * @return false 
+ */
+template <class T> bool Relation<T>::transitive() {
+    for (int i = 0; i < card; i++) {
+        for (int j = 0; j < card; j++) {
+            if (elements[i].second == elements[j].first) {
+                Pair<T> p;
+                p.first = elements[i].first;
+                p.second = elements[i].second;
+                if (!is_member(p)) {
+                    return false;
                 }
-			}
-		}
-	}
-	return true;
+            }
+        }
+        
+    }
+    return true;
 }
 
 /**
- * @brief Checks if the relation is a function
+ * @brief Checks if function relation
  * 
+ * @tparam T 
  * @return true 
  * @return false 
  */
-bool Relation::is_function() {
-	int i, j;
-	for (i = 0; i < size; ++i) {
-		for (j = 0; j < size; ++j) {
-			if (elements[i].first == elements[j].first && elements[i].second != elements[j].second) {
-				return false;
+template <class T> bool Relation<T>::is_function() {
+    for (int i = 0; i < card; i++) {
+        for (int j = 0; j < card; j++) {
+            if (elements[i].first == elements[j].first && 
+            elements[i].second == elements[j].second) {
+                    return false;
             }
-		}
-	}
-
-	return true;
+        }
+        
+    }
+    return true;
+}
+ 
+/**
+ * @brief Printing operator
+ * 
+ * @tparam T 
+ * @param out 
+ * @param r 
+ * @return ostream& 
+ */
+template <class T> ostream& operator<<(ostream& out, Relation<T> r) {
+    out << "{ ";
+    for (int i = 0; i < r.card; i++) {
+        if (i != 0) {
+            out << ", ";
+        }
+        out << "( " << r.elements[i].first << ", " << r.elements[i].second << " )";
+    }
+    out << " }";
 }
 
 /**
- * @brief Returns the inverse of the relation
+ * @brief Returns the combination of 2 relations
  * 
- * @return Relation 
+ * @tparam T 
+ * @param r 
+ * @return Relation<T> 
  */
-Relation Relation::inverse() {
-	int i;
-	Relation r;
-	// for (i = 0; i < root.cardinality(); i++)
-	// 	r.add_to_set(root.get_item(i));
-
-	for (i = 0; i < size; i++) {
-		Pair p;
-		p.first = elements[i].second;
-		p.second = elements[i].first;
-		r.add_element(p);
-	}
-	return r;
-}
-
-Relation Relation::combination(Relation r)
-{
-	int i, j;
-	Relation result("res");
-	for (i = 0; i < root.cardinality(); ++i)
-		result.add_to_set(root.get_item(i));
-
-	for (i = 0; i < size; ++i)
-	{
-		for (j = 0; j < r.size; ++j)
-		{
-			if (elements[i].second == r.elements[j].first)
-			{
-				Pair p;
-				p.first = elements[i].first;
-				p.second = r.elements[j].second;
-				result.add_element(p);
-			}
-		}
-	}
-
-	return result;
-}
-
-ostream& operator<<(ostream& out, Relation& r) {
-	int i;
-	cout << "{ ";
-	for (i = 0; i < r.size; ++i) {
-		if (i != 0) cout << ", ";
-		cout << "(" << r.elements[i].first << ", " << r.elements[i].second << ")";
-	}
-	cout << " }";
+template <class T> Relation<T> Relation<T>::combination(Relation<T> r) {
+    Relation<T> tmp;
+    for (int i = 0; i < root.cardinality(); i++) {
+        tmp.add_element(root[i]);
+    }
+    for (int i = 0; i < card; i++) {
+        for (int j = 0; j < card; j++) {
+            if (elements[i].second == r.elements[j].first) {
+                Pair<T> p;
+                p.first = elements[i].first;
+                p.second = elements[i].second;
+                tmp.add_element(p);
+            }
+        }
+    }
+    return tmp;
 }
