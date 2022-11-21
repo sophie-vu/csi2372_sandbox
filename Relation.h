@@ -30,6 +30,16 @@ template <class T> class Relation {
         bool asymmetric(); // Checks if asymmetric relation
         bool transitive(); // Checks if transitive relation
         bool is_function(); // Checks if function relation
-        friend ostream& operator<<(ostream& out, Relation r); // Printing operator
+        friend ostream& operator<<(ostream& out, Relation r) { // Printing operator
+            out << "{ ";
+            for (int i = 0; i < r.card; i++) {
+                if (i != 0) {
+                    out << ", ";
+                }
+            out << "( " << r.elements[i].first << ", " << r.elements[i].second << " )";
+            }
+            out << " }";
+            return out;
+        }
         Relation combination(Relation); // Returns the combination of 2 relations
 };

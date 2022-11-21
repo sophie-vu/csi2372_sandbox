@@ -52,13 +52,13 @@ template <class T> bool Set<T>::add_element(T t) {
     if (card > MAX_CARD) { // Cannot add
         return false;
     } else if (card == capacity) {
-        T *tmp;
+        T* tmp;
         tmp = new T[capacity + MAX_CARD / 2];
         if (tmp == NULL) {
             cout << "Memory error." << endl;
             return false;
         }
-        for (int i =0; i < card; i++) {
+        for (int i = 0; i < card; i++) {
             tmp[i] = elements[i];
         }
         delete[] elements;
@@ -72,9 +72,9 @@ template <class T> bool Set<T>::add_element(T t) {
                 return true;
             }
         }
-        elements[card++] = t;;
-        return true;
     }
+    elements[card++] = &t;
+    return true;
 }
 
 /**

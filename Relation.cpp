@@ -1,4 +1,5 @@
 #include "Relation.h"
+#include "Set.cpp"
 #include <iostream>
 #include <stack>
 using namespace std;
@@ -302,16 +303,17 @@ template <class T> bool Relation<T>::is_function() {
  * @param r 
  * @return ostream& 
  */
-template <class T> ostream& operator<<(ostream& out, Relation<T> r) {
-    out << "{ ";
-    for (int i = 0; i < r.card; i++) {
-        if (i != 0) {
-            out << ", ";
-        }
-        out << "( " << r.elements[i].first << ", " << r.elements[i].second << " )";
-    }
-    out << " }";
-}
+// template <class T> ostream& operator<<(ostream& out, Relation<T> r) {
+//     out << "{ ";
+//     for (int i = 0; i < r.card; i++) {
+//         if (i != 0) {
+//             out << ", ";
+//         }
+//         out << "( " << r.elements[i].first << ", " << r.elements[i].second << " )";
+//     }
+//     out << " }";
+//     return out;
+// }
 
 /**
  * @brief Returns the combination of 2 relations
