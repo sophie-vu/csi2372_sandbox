@@ -5,12 +5,11 @@ using namespace std;
 int main() {
     Set<string> s;
     Relation<string> res;
-    const string str = "string";
+    string str = "string";
     s.add_element(str);
     s.add_element("wow");
-    Pair<string> p;
-    p.first = "test";
-    p.second = "10";
-    res.add_element(p);
+    for (int i = 0; i < s.cardinality(); i++) {
+        cout << s.get_item(i) << endl;
+    }
     return 0;
 }
