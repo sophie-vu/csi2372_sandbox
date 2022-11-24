@@ -1,6 +1,7 @@
-
 /**
- * @brief Set class inspired by Lab 2 Solution.
+ * @file Set.h
+ * @author svu043@uottawa.ca
+ * @brief Set class inspired by Lab 2 Solution
  * 
  */
 #pragma once
