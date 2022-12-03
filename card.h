@@ -1,3 +1,5 @@
+#pragma once
+
 class Card {
     public:
         enum Suits {
