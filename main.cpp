@@ -17,6 +17,6 @@ int main() {
     } else {
         g.print();
     }
-    system("PAUSE");
+    cout << "Reaches here." << endl;
     return 0;
 }

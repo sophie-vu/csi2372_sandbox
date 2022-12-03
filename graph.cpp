@@ -26,6 +26,7 @@ void Graph::remove_directed_edge(int u, int w) {
 
 void Graph::print() {
     stack<int> stack;
+    cout << "Num of vertices "  << num_vertices << endl;
     bool* visited = new bool[num_vertices]; // Visited nodes
     for (int i = 0; i < num_vertices; i++) {
         visited[i] = false;
@@ -36,6 +37,12 @@ void Graph::print() {
             visit(i, visited, stack);
         }
     }
+    while (!stack.empty()) {
+        cout << stack.top() << " ";
+        stack.pop();
+    }
+    delete [] visited;
+    cout << "In print function." << endl;
 }
 
 void Graph::visit(int u, bool visited[], stack<int>& stack) {
@@ -67,10 +74,9 @@ bool Graph::is_cyclic() {
     for (int i = 0; i < num_vertices; i++) {
         if (check_vertices(i, visited, stack)) {
             return true;
-        } else {
-            return false;
         }
     }
+    return false;
 }
 
 bool Graph::check_vertices(int u, bool* visited, bool* stack) {
