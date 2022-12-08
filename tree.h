@@ -1,16 +1,18 @@
-#include "graph.h"
+#include "LinkedList.cpp"
 #include <iostream>
+using namespace std;
 class Tree {
     public:
-        Tree(int);
+        Tree();
         ~Tree();
-        void insert(int);
+        void insert_node(int);
         void destroy_tree();
         Node* remove(int);
         Node* search(int);
         Node* get_root();
-        int get_max_depth();
+        int get_max_depth(Node*);
         void print_tree(Node*);
+        int get_height();
 
     private:
         Node* root;

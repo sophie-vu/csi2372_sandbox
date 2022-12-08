@@ -17,6 +17,16 @@ int main() {
     // } else {
     //     g.print();
     // }
-	Tree t = Tree(3);
+	Tree t = Tree();
+	// t.insert_node(10);
+	t.insert_node(20);
+	cout << "Root: " << t.get_root()->val << endl;
+	// cout << "Max depth: " << t.get_max_depth(t.get_root());
+	// t.insert_node(1);
+	// t.insert_node(30);
+	// t.insert_node(2);
+	// t.insert_node(40);
+	// t.insert(3);
+	// cout << "Root: " << t.get_root()->val << endl;
     return 0;
 }

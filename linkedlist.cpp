@@ -18,13 +18,10 @@ LinkedList::~LinkedList() {
     tail = NULL;
 }
 
-void LinkedList::insert_directed_edge_at_end(int val) {
-    Node* new_node = new Node;
-    new_node->val = val;
+void LinkedList::insert_directed_edge_at_end(Node* new_node) {
     new_node->is_directed = true;
     new_node->next = NULL;
     new_node->prev = tail;
-
     if (head == NULL) {
         head = tail = new_node;
     } else {
@@ -34,9 +31,7 @@ void LinkedList::insert_directed_edge_at_end(int val) {
     size++;
 }
 
-void LinkedList::insert_undirected_edge_at_end(int val) {
-    Node* new_node = new Node;
-    new_node->val = val;
+void LinkedList::insert_undirected_edge_at_end(Node* new_node) {
     new_node->is_directed = false;
     new_node->next = NULL;
     new_node->prev = tail;
@@ -50,54 +45,57 @@ void LinkedList::insert_undirected_edge_at_end(int val) {
     size++;
 }
 
-bool LinkedList::delete_first() {
+Node* LinkedList::delete_first() {
     if (head != NULL) {
         Node* delete_node = head;
         head = delete_node->next;
-        delete delete_node;
-        delete_node = NULL;
+        // delete delete_node;
+        // delete_node = NULL;
         size--;
-        return true;
+        return delete_node;
     } else {
-        return false;
+        cout << "Cannot delete the root." << endl;
+        return NULL;
     }
 }
 
-bool LinkedList::delete_last() {
+Node* LinkedList::delete_last() {
     if (tail != NULL) {
         Node* delete_node = tail;
         tail = delete_node->prev;
-        delete delete_node;
-        delete_node = NULL;
+        // delete delete_node;
+        // delete_node = NULL;
         size--;
-        return true;
+        return delete_node;
     } else {
-        return false;
+        cout << "Cannot delete the root." << endl;
+        return NULL;
     }
 }
 
-bool LinkedList::delete_node(int val) {
+Node* LinkedList::delete_node(Node* delete_node) {
     if (head != NULL) {
-        if (head->val == val) {
+        if (head == delete_node) {
             delete_first();
-        } else if (tail->val == val) {
+        } else if (tail == delete_node) {
             delete_last();
         } else {
             Node* curr = head;
             Node* delete_node;
             while (curr != NULL) {
                 delete_node = curr;
-                if (curr->val == val) {
+                if (curr == delete_node) {
                     curr->prev->next = delete_node->next;
                     curr->next->prev = delete_node->prev;
-                    delete delete_node;
-                    delete_node = NULL;
+                    // delete delete_node;
+                    // delete_node = NULL;
                     size--;
-                    return true;
+                    return delete_node;
                 }
                 curr = curr->next;
             }
         }
     }
-    return false;
+    cout << "Cannot delete the root." << endl;
+    return NULL;
 }

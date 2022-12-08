@@ -8,16 +8,16 @@ Graph::~Graph() {
     delete [] list;
 }
 
-void Graph::add_directed_edge(int u, int w) {
+void Graph::add_directed_edge(int u, Node* w) {
     list[u].insert_directed_edge_at_end(w);
 }
 
-void Graph::add_undirected_edge(int u, int w) {
+void Graph::add_undirected_edge(int u, Node* w) {
     list[u].insert_undirected_edge_at_end(w);
 }
 
-void Graph::remove_directed_edge(int u, int w) {
-    if (list[u].delete_node(w)) {
+void Graph::remove_directed_edge(int u, Node* w) {
+    if (list[u].delete_node(w) != NULL) {
         cout << "The vertex " << u << " and " << w << " does  not exist in the graph." << endl;
     } else {
         cout << "The vertex " << u << " and " << w << " is deleted." << endl;

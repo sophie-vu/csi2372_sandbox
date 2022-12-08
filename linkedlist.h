@@ -1,9 +1,15 @@
+#include <iostream>
+using namespace std;
 class Node {
     public:
     int val;
     Node* next;
     Node* prev;
     bool is_directed;
+    friend ostream& operator<<(ostream& out, Node n) {
+        out << n.val;
+        return out;
+    }
 };
 
 class LinkedList {
@@ -14,9 +20,9 @@ class LinkedList {
     public:
         LinkedList();
         ~LinkedList();
-        void insert_directed_edge_at_end(int);
-        void insert_undirected_edge_at_end(int);
-        bool delete_first();
-        bool delete_last();
-        bool delete_node(int);
+        void insert_directed_edge_at_end(Node*);
+        void insert_undirected_edge_at_end(Node*);
+        Node* delete_first();
+        Node* delete_last();
+        Node* delete_node(Node*);
 };

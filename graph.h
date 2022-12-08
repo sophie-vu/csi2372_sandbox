@@ -10,9 +10,9 @@ class Graph {
     public:
         Graph(int);
         ~Graph();
-        void add_directed_edge(int, int);
-        void add_undirected_edge(int, int);
-        void remove_directed_edge(int, int);
+        void add_directed_edge(int, Node*);
+        void add_undirected_edge(int, Node*);
+        void remove_directed_edge(int, Node*);
         void print();
         void visit(int, bool[], stack<int>&);
         bool is_cyclic();
