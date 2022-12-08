@@ -1,6 +1,6 @@
 #include "graph.h"
 #include <iostream>
-class Tree : private Graph {
+class Tree {
     public:
         Tree(int);
         ~Tree();

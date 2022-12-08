@@ -4,7 +4,7 @@
 using namespace std;
 
 class Graph {
-    public:
+    private:
         LinkedList* list;
         int num_vertices;
     public:

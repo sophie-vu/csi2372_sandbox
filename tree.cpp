@@ -1,6 +1,6 @@
 #include "tree.h"
 
-Tree::Tree(int num) : Graph(num) {
+Tree::Tree(int num) {
     root = NULL;
 }
 
