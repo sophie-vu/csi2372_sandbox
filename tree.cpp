@@ -1,129 +1,120 @@
 #include "tree.h"
-#include <cmath>
+#include <iostream>
+#include <ostream>
 using namespace std;
-
-Tree::Tree() {
+Tree::Tree() : Graph(0) {
     root = NULL;
-    // root->next = root->prev = NULL;
-    // root->is_directed = true;
-}
-
-Tree::~Tree() {
-    destroy_tree();
-}
-
-void Tree::destroy_tree(Node* leaf) {
-    if (leaf == NULL) {
-        destroy_tree(leaf->next);
-        destroy_tree(leaf->prev);
-        delete leaf;
-    }
-}
-
-void Tree::insert(int val, Node* leaf) {
-    if (val < leaf->val) {
-        if (leaf->next != NULL) {
-            insert(val, leaf->next);
-        } else {
-            leaf->next = new Node;
-            leaf->next->val = val;
-            leaf->next->next = NULL;
-        }
-    } else if (val >= leaf->val) {
-        if (leaf->prev != NULL) {
-            insert(val, leaf->prev);
-        } else {
-            leaf->prev = new Node;
-            leaf->prev->val = val;
-            leaf->prev->prev = NULL;
-            leaf->prev->next = NULL;
-        }
-    }
+    lst = LinkedList();
 }
 
 void Tree::insert_node(int val) {
-    Node n;
-    n.val = val;
+    Node* new_node = new Node;
+    Node* parent;
+    new_node->val = val;
+    new_node->next = NULL;
+    new_node->prev = NULL;
+    parent = NULL;
+
     if (root == NULL) {
-        cout << "goes here" << endl;
-        root = &n;
-        return;
+        root = new_node;
     } else {
-        LinkedList lst;
-        lst.insert_directed_edge_at_end(root);
-        while (true) {
-            Node node = *lst.tail;
-            lst.delete_last();
-            if (node.next != NULL && node.prev != NULL) { // Node has both left + right child -> add to list
-                lst.insert_directed_edge_at_end(node.next);
-                lst.insert_directed_edge_at_end(node.prev);
+        Node* curr;
+        curr = root;
+        while (curr) {
+            parent = curr;
+            if (new_node->val > curr->val) {
+                curr = curr->prev;
             } else {
-                if (node.next == NULL) {
-                    node.next = &n;
-                    lst.insert_directed_edge_at_end(node.next);
-                } else {
-                    node.prev = &n;
-                    lst.insert_directed_edge_at_end(node.prev);
-                }
-                break;
+                curr = curr->next;
             }
-
         }
-    }
-}
-
-Node* Tree::search(int val, Node* leaf) {
-    if (leaf != NULL) {
-        if (val == leaf->val) {
-            return leaf;
-        }
-        if (val < leaf->val) {
-            return search(val, leaf->next);
+        if (new_node->val < parent->val) {
+            parent->next = new_node;
         } else {
-            return search(val, leaf->prev);
+            parent->prev = new_node;
         }
-    } else {
-        return NULL;
     }
 }
 
-Node* Tree::search(int val) {
-    return search(val, root);
-}
-
-void Tree::destroy_tree() {
-    destroy_tree(root);
-}
-
-void Tree::print_tree(string prefix, Node* leaf, bool isNext) {
-    if (leaf != NULL) {
-        cout << prefix;
-        cout << (isNext ? "├──" : "└──");
-        cout << leaf->val << endl;
-        string res = prefix + (isNext ? "│   " : "    ");
-        print_tree(res, leaf->next, true);
-        print_tree(res, leaf->prev, false);
+void Tree::remove_node(int val) {
+    bool found = false;
+    if (root == NULL) {
+        cout << "Tree is already empty." << endl;
+        return;
+    }
+    Node* curr;
+    Node* parent;
+    curr = root;
+    while (curr != NULL) {
+        if (curr->val == val) {
+            found = true;
+            break;
+        } else {
+            parent = curr;
+            if (val > curr->val) {
+                curr = curr->prev;
+            } else {
+                curr = curr->next;
+            }
+        }
+    }
+    if (!found) {
+        cout << "No value found in true." << endl;
+        return;
+    }
+    bool case1 = (curr->next == NULL && curr->prev != NULL);
+    bool case2 = (curr->next != NULL && curr->prev == NULL);
+    bool case3 = (curr->next == NULL && curr->prev == NULL);
+    bool case4 = (curr->next != NULL && curr->prev != NULL);
+    if (case1 || case2) {
+        if (case1) {
+            if (parent->next == curr) {
+                parent->next = curr->prev;
+                delete curr;
+            } else {
+                parent->prev = curr->next;
+                delete curr;
+            }
+        }
+        return;
+    }
+    if (case3) {
+        if (parent->next == curr) {
+            parent->next = NULL;
+        } else {
+            parent->prev = NULL;
+        }
+        delete curr;
+        return;
+    }
+    if (case4) {
+        Node* child;
+        child = curr->prev;
+        if (child->next == NULL & child->prev == NULL) {
+            curr = child;
+            delete child;
+            curr->prev = NULL;
+        } else {
+            if (curr->prev->next != NULL) {
+                Node* lcurr;
+                Node* lcurr_p;
+                lcurr = curr->prev->next;
+                while (lcurr->next != NULL) {
+                    lcurr_p = lcurr;
+                    lcurr = lcurr->next;
+                }
+                curr->val = lcurr->val;
+                delete lcurr;
+                lcurr_p->next = NULL;
+            } else {
+                Node* tmp;
+                tmp = curr->prev;
+                curr->val = tmp->val;
+                curr->prev= tmp->prev;
+                delete tmp;
+            }
+        }
+        return;
     }
 }
 
-void Tree::print_tree(Node* leaf) {
-    print_tree("", leaf, false);
-}
-
-Node* Tree::get_root() {
-    return root;
-}
-
-int Tree::get_max_depth(Node* node) {
-    cout << "Node: " << node << endl;
-    if (node == NULL) return 0;
-    int left = get_max_depth(node->next);
-    cout << "calculate left max dept " << left << endl;
-    int right = get_max_depth(node->prev);
-    cout << "calculate right max dept " << right << endl;
-    return max(left + 1, right + 1);
-}
-
-int Tree::get_height() {
-    return get_max_depth(root);
-}
