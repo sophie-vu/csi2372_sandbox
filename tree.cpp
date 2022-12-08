@@ -1,26 +1,36 @@
 #include "tree.h"
 #include <iostream>
 #include <ostream>
+#include <iomanip>
 using namespace std;
+/**
+ * @brief Constructor calls Graph base class with param 0
+ * 
+ */
 Tree::Tree() : Graph(0) {
     root = NULL;
-    lst = LinkedList();
 }
 
+/**
+ * @brief Inserts a new leaf node / creates a new tree if empty
+ *        (smaller values go left and higher elements go right)
+ * 
+ * @param val 
+ */
 void Tree::insert_node(int val) {
     Node* new_node = new Node;
     Node* parent;
     new_node->val = val;
-    new_node->next = NULL;
-    new_node->prev = NULL;
+    new_node->next = NULL; // Left
+    new_node->prev = NULL; // Right
     parent = NULL;
 
-    if (root == NULL) {
+    if (root == NULL) { // Check if new tree
         root = new_node;
-    } else {
+    } else { // Inserts leaf node if empty
         Node* curr;
         curr = root;
-        while (curr) {
+        while (curr) { // Find parent node
             parent = curr;
             if (new_node->val > curr->val) {
                 curr = curr->prev;
@@ -36,9 +46,14 @@ void Tree::insert_node(int val) {
     }
 }
 
+/**
+ * @brief Removes a node of a given value
+ * 
+ * @param val 
+ */
 void Tree::remove_node(int val) {
     bool found = false;
-    if (root == NULL) {
+    if (root == NULL) { // Checks if is empty
         cout << "Tree is already empty." << endl;
         return;
     }
@@ -66,7 +81,7 @@ void Tree::remove_node(int val) {
     bool case2 = (curr->next != NULL && curr->prev == NULL);
     bool case3 = (curr->next == NULL && curr->prev == NULL);
     bool case4 = (curr->next != NULL && curr->prev != NULL);
-    if (case1 || case2) {
+    if (case1 || case2) { // Removing node with 1 child
         if (case1) {
             if (parent->next == curr) {
                 parent->next = curr->prev;
@@ -78,7 +93,7 @@ void Tree::remove_node(int val) {
         }
         return;
     }
-    if (case3) {
+    if (case3) { // Removing a leaf node
         if (parent->next == curr) {
             parent->next = NULL;
         } else {
@@ -87,24 +102,25 @@ void Tree::remove_node(int val) {
         delete curr;
         return;
     }
-    if (case4) {
-        Node* child;
-        child = curr->prev;
-        if (child->next == NULL & child->prev == NULL) {
-            curr = child;
-            delete child;
+    if (case4) { // Removing a node with 2 children -> replace node with smallest value in right subtree
+        Node* child_right;
+        child_right = curr->prev;
+        if (child_right->next == NULL & child_right->prev == NULL) {
+            curr = child_right;
+            delete child_right;
             curr->prev = NULL;
-        } else {
-            if (curr->prev->next != NULL) {
-                Node* lcurr;
+        } else { // Right child has children
+            if ((curr->prev)->next != NULL) { // Has a left child
+                Node* left_curr;
                 Node* lcurr_p;
-                lcurr = curr->prev->next;
-                while (lcurr->next != NULL) {
-                    lcurr_p = lcurr;
-                    lcurr = lcurr->next;
+                left_curr = (curr->prev)->next;
+                lcurr_p = curr->prev;
+                while (left_curr->next != NULL) {
+                    lcurr_p = left_curr;
+                    left_curr = left_curr->next;
                 }
-                curr->val = lcurr->val;
-                delete lcurr;
+                curr->val = left_curr->val;
+                delete left_curr;
                 lcurr_p->next = NULL;
             } else {
                 Node* tmp;
@@ -118,3 +134,17 @@ void Tree::remove_node(int val) {
     }
 }
 
+void Tree::print() {
+    print_tree(root, 0);
+}
+
+void Tree::print_tree(Node* leaf, int indent) {
+    if (leaf != NULL) {
+        if (leaf->prev) print_tree(leaf->prev, indent + 4);
+        if (leaf->next) print_tree(leaf->next, indent + 4);
+        if (indent) {
+            cout << setw(indent) << "---";
+        }
+        cout << leaf->val << "\n ";
+    }
+}  

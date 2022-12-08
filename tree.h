@@ -1,7 +1,7 @@
-// #include "LinkedList.cpp"
 #include "graph.cpp"
 #include <iostream>
 using namespace std;
+
 class Tree : private Graph {
     public:
         Tree();
