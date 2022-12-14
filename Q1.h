@@ -1,6 +1,7 @@
 #include <string>
 using namespace std;
 class Piece {
+    protected:
     string name;
     int color;
     int row;
