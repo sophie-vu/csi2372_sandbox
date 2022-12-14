@@ -6,6 +6,7 @@ using namespace std;
 //     int row;
 //     char col;
 //     public:
+//     Piece();
 //     Piece(string, string);
 //     string getName();
 //     int getRow();
@@ -15,15 +16,16 @@ using namespace std;
 //     virtual bool move(int, char) = 0;
 // };
 
+Piece::Piece() {
+    this->row = 0;
+    this->col = 'a';
+}
+
 Piece::Piece(string name, int color, int row, char col) {
     this->name = name;
     this->color = color;
     this->row = row;
     this->col = col;
-}
-
-string Piece::getName() {
-    return name;
 }
 
 int Piece::getRow() {
@@ -65,6 +67,7 @@ bool Piece::isWhitePiece() {
 
 // class King : public Piece {
 //     public:
+//     string getName();
 //     bool move(int, char);
 // };
 
@@ -78,10 +81,19 @@ bool King::move(int newRow, char newCol) {
     return false;
 }
 
+string King::getName() {
+    return "K";
+}
+
 // class Queen : public Piece {
 //     public:
+//     string getName();
 //     bool move(int, char);
 // };
+
+string Queen::getName() {
+    return "Q";
+}
 
 bool Queen::move(int newRow, char newCol) {
     if (!isOnBoard(newRow, newCol)) return false;
@@ -113,8 +125,13 @@ bool Queen::move(int newRow, char newCol) {
 
 // class Rook : public Piece {
 //     public:
+//     string getName();
 //     bool move(int, char);
 // };
+
+string Rook::getName() {
+    return "Q";
+}
 
 bool Rook::move(int newRow, char newCol) {
     if (!isOnBoard(newRow, newCol)) return false;
@@ -138,8 +155,13 @@ bool Rook::move(int newRow, char newCol) {
 
 // class Knight : public Piece {
 //     public:
+//     string getName();
 //     bool move(int, char);
 // };
+
+string Knight::getName() {
+    return "KN";
+}
 
 bool Knight::move(int newRow, char newCol) {
     if (!isOnBoard(newRow, newCol)) return false;
@@ -156,8 +178,13 @@ bool Knight::move(int newRow, char newCol) {
 
 // class Bishop : public Piece {
 //     public:
+//     string getBishop();
 //     bool move(int, char);
 // };
+
+string Bishop::getName() {
+    return "B";
+}
 
 bool Bishop::move(int newRow, char newCol) {
     int rowDiff, colDiff;

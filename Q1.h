@@ -1,5 +1,4 @@
 #include <string>
-#include <set>
 using namespace std;
 class Piece {
     string name;
@@ -7,8 +6,8 @@ class Piece {
     int row;
     char col;
     public:
+    Piece();
     Piece(string, int, int, char);
-    string getName();
     int getRow();
     char getCol();
     void setRow(int);
@@ -16,30 +15,36 @@ class Piece {
     bool isWhitePiece();
     bool isOnBoard(int, char);
     bool validMove(int, char);
+    virtual string getName() = 0;
     virtual bool move(int, char) = 0;
 };
 
 class King : public Piece {
     public:
+    string getName();
     bool move(int, char);
 };
 
 class Queen : public Piece {
     public:
+    string getName();
     bool move(int, char);
 };
 
 class Rook : public Piece {
     public:
+    string getName();
     bool move(int, char);
 };
 
 class Knight : public Piece {
     public:
+    string getName();
     bool move(int, char);
 };
 
 class Bishop : public Piece {
     public:
+    string getName();
     bool move(int, char);
 };
